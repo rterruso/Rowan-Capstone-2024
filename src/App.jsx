@@ -1,14 +1,17 @@
 // IMPORTS HERE
 import './App.css'
-import './components/Example'
-import Example from './components/Example'
+import WelcomeMessage from './components/WelcomeMessage'
+import ViewControls from './components/ViewControls'
+import MovieCardContainer from './components/MovieCardContainer'
 
 function App() {
   
   return (
     <>
     {/* CALL COMPONENTS/FUNCTIONS HERE */}
-    <Example/>
+    <WelcomeMessage/>
+    <ViewControls/>
+    <MovieCardContainer/>
     </>
   )
 }
