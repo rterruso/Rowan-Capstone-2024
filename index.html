@@ -25,7 +25,7 @@
 
   <body class="container bg-dark text-white">
     <script>
-      function getAuthorizaiton() {
+      function getAuthorization() {
         return (options = {
           method: 'GET',
           headers: {
@@ -37,7 +37,7 @@
       }
 
       async function fetchMovieJSONData() {
-        await fetch(url, getAuthorizaiton())
+        await fetch(url, getAuthorization())
           .then((response) => {
             return response.text();
           })
@@ -154,7 +154,7 @@
         const url =
           'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-        fetch(url, getAuthorizaiton())
+        fetch(url, getAuthorization())
           .then((response) => {
             return response.text();
           })
@@ -318,7 +318,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -425,7 +425,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -533,7 +533,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -640,7 +640,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -747,7 +747,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -853,7 +853,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -984,7 +984,7 @@
             const url =
               'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
 
-            fetch(url, getAuthorizaiton())
+            fetch(url, getAuthorization())
               .then((response) => {
                 return response.text();
               })
@@ -1122,7 +1122,7 @@
                   API_KEY +
                   '&query=' +
                   movieTitle;
-                const response = await fetch(url, getAuthorizaiton());
+                const response = await fetch(url, getAuthorization());
                 const searchResults = JSON.parse(await response.text());
 
                 const trendingOverviewContainer =
@@ -1266,7 +1266,7 @@
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous">
+    </script>
   </body>
 </html>
