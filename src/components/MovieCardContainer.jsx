@@ -1,11 +1,7 @@
-import MovieCard from "./MovieCard";
 
-function MovieCardContainer(){
-    return(
-        <>
-        <MovieCard/>
-        </>
-    )
+export default function MovieCardContainer(){
+
+  return(
+    {}
+  )
 }
-
-export default MovieCardContainer

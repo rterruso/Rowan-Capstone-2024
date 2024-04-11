@@ -1,5 +1,5 @@
 
-function ViewControls(){
+export default function ViewControls(){
 
     return(
         <div className="view-controls-container">
@@ -45,5 +45,3 @@ function ViewControls(){
     );
 
 }
-
-export default ViewControls

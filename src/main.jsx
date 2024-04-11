@@ -9,9 +9,14 @@ import { RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
+import Library from './pages/Library.jsx'
 
 // CREATE THE DIRECTORY OF PAGES
 const router = createBrowserRouter([
+  {
+    path:"/",
+    element: <Home/>
+  },
   {
   path:"home",
   element: <Home/>
@@ -23,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "contact",
     element: <Contact/>
+  },
+  {
+    path: "library",
+    element: <Library/>
   }
 ])
 
