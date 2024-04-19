@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DisplayAlteredMovieData from './DisplayAlteredMovieData';
 import { getAuthorization } from './FetchMovieData';
 
 const SortFilterMenu = () => {
-    const fetch = require('node-fetch');
     const [sortValue, setSortValue] = useState('date-asc');
     const [filterValue, setFilterValue] = useState('all');
     const [movieTitle, setMovieTitle] = useState('');
@@ -35,8 +34,8 @@ const SortFilterMenu = () => {
 
     return (
         <div className="menu">
-            <div className="search-container" d-none d-sm-block>
-                <input type="text" id="search-box" placeholder="Search for a movie..." autocomplete="on" movieTitle={movieTitle} onChange={handleMovieTitleChange} />
+            <div className="search-container">
+                <input type="text" id="search-box" placeholder="Search for a movie..." autoComplete="on" value={movieTitle} onChange={handleMovieTitleChange} />
                 <button id="search-button" onClick={handleMovieSearch}>Search</button>
             </div>
             <div className="login-register-container">

@@ -2,6 +2,7 @@
 import './App.css'
 import WelcomeMessage from './components/WelcomeMessage'
 import SortFilterMenu from './components/SortFilterMenu'
+// import FetchAndDisplayFromQueue from './FetchAndDisplayFromQueue';
 
 function App () {
   return (
@@ -9,6 +10,7 @@ function App () {
     <>
     <WelcomeMessage/>
     <SortFilterMenu/>
+    {/* <FetchAndDisplayFromQueue/> */}
     </>
   )
 }
