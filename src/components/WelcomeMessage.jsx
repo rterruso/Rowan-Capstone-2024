@@ -1,7 +1,6 @@
-
 function WelcomeMessage(){
     return(
-        <h2>Welcome PLACEHOLDER{}</h2>
+        <h2>Welcome to CinemaWorld</h2>
     )
 }
 

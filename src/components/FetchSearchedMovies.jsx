@@ -1,25 +1,10 @@
-import { fetchTrendingMoviesData } from './FetchMovieData';
+import { fetchTrendingMoviesData, getAuthorization } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
-// import SortFilterMenu from './SortFilterMenu';
+import SearchBar from './SearchBar';
 import { useState, useEffect } from 'react';
+//import { manipulateData } from './ManipulateData';
 
-// const savetoqueue = require('./SaveToQueue');
-
-// const handleButtonClick = async (movieID) => {
-//     try {
-//         const response = await fetch('/savetoqueue', {
-//             method: 'POST', // Use POST for sending data
-//             headers: { 'Content-Type': 'application/json' }, // Set content type
-//             body: JSON.stringify({ movieID }), // Send movie ID in body
-//         });
-
-//         const data = await response.json();
-//         alert('Response from savetoqueue:', data); // Handle success or error
-//     } catch (error) {
-//         console.error('Error saving movie:', error);
-//     }
-// };
-
+//FIX REDUNDANT CALLS
 function MovieModal({ movie, onClose }) {
     return (
         <div className="modal">
@@ -31,28 +16,28 @@ function MovieModal({ movie, onClose }) {
                 <h5>Release Date: {movie.release_date}</h5>
                 <h5>Rating: {Math.round(movie.vote_average * 10) / 10}</h5>
                 <h5>{mapGenres(movie)}</h5>
-                <button className="save-to-queue-button" onClick={() => handleButtonClick(movie.id)}>Save to Queue</button>
+                <button class="save-to-queue-button rounded-0" onClick="queue.js">Save to Queue</button>
             </div>
         </div>
     );
 }
 
-const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
+const FetchSearchedMovies = ({ searchResults, sortValue, filterValue }) => {
     const [movies, setMovieData] = useState([]);
-    const [movieCount, setMovieCount] = useState(0);
+    const [movieCount, setMovieCount] = useState([]);
     let movieRef = [];
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            const movies = Object.keys(movieResults).length === 0 ? await fetchTrendingMoviesData() : movieResults;
-            setMovieData(movies.results);
-            setMovieCount(movies.results.length);
+            setMovieData(searchResults);
+            setMovieCount(searchResults.length);
         }
         fetchData();
-    }, [movieResults]);
+    }, [])
 
+    //FIX REDUNDANT CALLS
     const manipulateData = (sortValue, filterValue) => {
         let len = 0, ref = [];
 
@@ -182,13 +167,11 @@ const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
     };
 
     return (
-        <div className="movie-overview">
-            <h2>Movies</h2>
+        <div className="movie-overview" class="row">
             <div>
                 {movieRef.map((movie) => (
                     <div>
-                        <img className="movie-poster"
-                            alt={movie.title}
+                        <img className="movie-poster" alt={movie.title}
                             src={"https://image.tmdb.org/t/p/original/" + movie.poster_path}
                             onClick={() => openModalContainer(movie)}
                         />
@@ -201,4 +184,4 @@ const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
     );
 }
 
-export default DisplayAlteredMovieData;
+export default FetchSearchedMovies;
