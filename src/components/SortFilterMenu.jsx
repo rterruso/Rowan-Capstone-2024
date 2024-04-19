@@ -34,13 +34,13 @@ const SortFilterMenu = () => {
 
     return (
         <div className="menu">
+            <div className="login-register-container">
+                <a href='./Login.js' className="login">Login</a>
+                <a href='./register.html' className="register">Register</a>
+            </div>
             <div className="search-container">
                 <input type="text" id="search-box" placeholder="Search for a movie..." autoComplete="on" value={movieTitle} onChange={handleMovieTitleChange} />
                 <button id="search-button" onClick={handleMovieSearch}>Search</button>
-            </div>
-            <div className="login-register-container">
-                {/* <a href={Login} className="login btn btn-primary rounded-0">Login</a>
-                <a href={Register} className="register btn btn-primary rounded-0">Register</a> */}
             </div>
             <div className="sort-filter-container">
                 <div className="sort-controls-container">
