@@ -2,42 +2,60 @@ import { fetchTrendingMoviesData } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
 // import SortFilterMenu from './SortFilterMenu';
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-// const savetoqueue = require('./SaveToQueue');
+const savetoqueue = require('./SaveToQueue');
 
-// const handleButtonClick = async (movieID) => {
-//     try {
-//         const response = await fetch('/savetoqueue', {
-//             method: 'POST', // Use POST for sending data
-//             headers: { 'Content-Type': 'application/json' }, // Set content type
-//             body: JSON.stringify({ movieID }), // Send movie ID in body
-//         });
+const handleButtonClick = async (movieID) => {
+    try {
+        const response = await fetch(savetoqueue, {
+            method: 'POST', // Use POST for sending data
+            headers: { 'Content-Type': 'application/json' }, // Set content type
+            body: { movieID }, // Send movie ID in body
+        });
 
-//         const data = await response.json();
-//         alert('Response from savetoqueue:', data); // Handle success or error
-//     } catch (error) {
-//         console.error('Error saving movie:', error);
-//     }
-// };
+        const data = await response.json();
+        alert('Response from savetoqueue:', data); // Handle success or error
+    } catch (error) {
+        console.error('Error saving movie:', error);
+    }
+};
 
-function MovieModal({ movie, onClose }) {
+function MovieModal(props) {
+    const { movie, onClose } = props;
+    let title = movie.title, overview = movie.overview, releaseDate = movie.release_date,
+        poster = movie.poster_path, rating = Math.round(movie.vote_average * 10) / 10, genres = mapGenres(movie), id = movie.id;
+
     return (
         <div className="modal">
             <div className="modal-content">
                 <h5 className='close-button' onClick={onClose}>&times;</h5>
-                <img className="modal-poster" alt={movie.title} src={"https://image.tmdb.org/t/p/original/" + movie.poster_path} />
-                <h5>{movie.title}</h5>
-                <h5>Overview: {movie.overview}</h5>
-                <h5>Release Date: {movie.release_date}</h5>
-                <h5>Rating: {Math.round(movie.vote_average * 10) / 10}</h5>
-                <h5>{mapGenres(movie)}</h5>
-                <button className="save-to-queue-button" onClick={() => handleButtonClick(movie.id)}>Save to Queue</button>
+                <img className="modal-poster" alt={title} src={"https://image.tmdb.org/t/p/original/" + poster} />
+                <h5>{title}</h5>
+                <h5>Overview: {overview}</h5>
+                <h5>Release Date: {releaseDate}</h5>
+                <h5>Rating: {rating}</h5>
+                <h5>{genres}</h5>
+                <button className="save-to-queue-button" onClick={() => handleButtonClick(id)}>Save to Queue</button>
             </div>
         </div>
     );
 }
 
-const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
+MovieModal.propTypes = {
+    movie: PropTypes.array.isRequired,
+    onClose: PropTypes.func.isRequired,
+    // title: PropTypes.string.isRequired,
+    // overview: PropTypes.string.isRequired,
+    // releaseDate: PropTypes.string.isRequired,
+    // poster: PropTypes.string.isRequired,
+    // rating: PropTypes.number.isRequired,
+    // genres: PropTypes.array.isRequired,
+    // id: PropTypes.number.isRequired
+};
+
+const DisplayAlteredMovieData = (props) => {
+    const { movieResults, sortValue, filterValue } = props;
     const [movies, setMovieData] = useState([]);
     const [movieCount, setMovieCount] = useState(0);
     let movieRef = [];
@@ -185,8 +203,8 @@ const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
         <div className="movie-overview">
             <h2>Movies</h2>
             <div>
-                {movieRef.map((movie) => (
-                    <div>
+                {movieRef.map((movie, index) => (
+                    <div key={index}>
                         <img className="movie-poster"
                             alt={movie.title}
                             src={"https://image.tmdb.org/t/p/original/" + movie.poster_path}
@@ -200,5 +218,18 @@ const DisplayAlteredMovieData = ({ movieResults, sortValue, filterValue }) => {
         </div>
     );
 }
+
+DisplayAlteredMovieData.propTypes = {
+    movieResults: PropTypes.array.isRequired,
+    sortValue: PropTypes.string.isRequired,
+    filterValue: PropTypes.string.isRequired,
+    // title: PropTypes.string.isRequired,
+    // overview: PropTypes.string.isRequired,
+    // releaseDate: PropTypes.string.isRequired,
+    // poster: PropTypes.string.isRequired,
+    // rating: PropTypes.number.isRequired,
+    // genres: PropTypes.array.isRequired,
+    // id: PropTypes.number.isRequired
+};
 
 export default DisplayAlteredMovieData;
