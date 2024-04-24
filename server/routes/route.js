@@ -19,18 +19,30 @@ router.get('/', ensureAuthenticated, (req, res) => {
 
 
 router.post('/register', async (req, res) => {
-    try {
-        const newUser = new User(req.body);
-        await newUser.save();
-        res.redirect('/login'); // Redirect to login on successful registration
-      } catch (error) {
-        // Check for duplicate key error
-        if (error.code === 11000) {
-          return res.status(400).send("Email or username already exists.");
-        }
-        console.error(error); // Log the error for debugging
-        return res.status(500).send("An error occurred.");
-      }
+  try {
+    
+    const { username, email, password } = req.body;
+
+    // Create a new User instance with the extracted fields
+    const newUser = new User({ username, email, password });
+
+   
+    await newUser.save();
+
+    // Redirect to login on successful registration
+    res.redirect('/login');
+  } catch (error) {
+    // Check for a MongoDB duplicate key
+    if (error.code === 11000) {
+      return res.status(400).send("Email or username already exists.");
+    }
+    
+    // Log the full error for debugging purposes
+    console.error('Registration error:', error);
+
+    // Send a generic error response
+    return res.status(500).send("An error occurred during registration.");
+  }
 });
 
 router.post('/login', passport.authenticate('local', {
