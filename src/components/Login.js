@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import '../css/style.css'; 
+import { useState } from 'react';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -64,7 +63,7 @@ function Login() {
                 <button type="submit" className="btn btn-lg btn-primary w-100 fs-6">Login</button>
               </div>
               <div className="row">
-                <small>Don't have an account? <a href="/register.html">Sign Up</a></small>
+                {/* <small>Don't have an account? <a href="/register.html">Sign Up</a></small> */}
               </div>
             </div>
           </form>

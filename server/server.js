@@ -21,12 +21,11 @@ const path = require('path');
 const flash = require('connect-flash');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const app = express();
 
 // Import routes
 const userRoutes = require('./routes/route');
 const apiRoutes = require('./routes/api');
-
-const app = express();
 
 app.use(helmet()); // Set security-related HTTP headers
 app.use(rateLimit({ // Basic rate-limiting middleware
@@ -76,7 +75,7 @@ app.use((err, req, res, next) => {
 
 // Use routes
 app.use('/', userRoutes);
-app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;

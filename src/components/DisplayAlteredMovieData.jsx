@@ -1,24 +1,30 @@
 import { fetchTrendingMoviesData } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
-// import SortFilterMenu from './SortFilterMenu';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const savetoqueue = require('./SaveToQueue');
+// const savetoqueue = require('../../server/routes/savetoqueue');
 
-const handleButtonClick = async (movieID) => {
-    try {
-        const response = await fetch(savetoqueue, {
-            method: 'POST', // Use POST for sending data
-            headers: { 'Content-Type': 'application/json' }, // Set content type
-            body: { movieID }, // Send movie ID in body
+const handleButtonClick = async (movieID, movieTitle) => {
+    const movieData = {
+        id: movieID,
+        title: movieTitle
+    };
+
+    await fetch('http://localhost:5000/savetoqueue', {
+        method: 'POST', // Use POST for sending data
+        headers: {}, // Set content type
+        body: JSON.stringify ({ id: movieData.id, title: movieData.title }), // Send data to be sent in body
+    })
+        .then(response => response.text())
+        .then(data => {
+            alert('Movie sent successfully: ' + data);
+            // Handle successful response (e.g., display a success message)
+        })
+        .catch(error => {
+            alert('Error sending movie data: ' + error);
+            // Handle errors (e.g., display an error message)
         });
-
-        const data = await response.json();
-        alert('Response from savetoqueue:', data); // Handle success or error
-    } catch (error) {
-        console.error('Error saving movie:', error);
-    }
 };
 
 function MovieModal(props) {
@@ -36,7 +42,7 @@ function MovieModal(props) {
                 <h5>Release Date: {releaseDate}</h5>
                 <h5>Rating: {rating}</h5>
                 <h5>{genres}</h5>
-                <button className="save-to-queue-button" onClick={() => handleButtonClick(id)}>Save to Queue</button>
+                <button className="save-to-queue-button" onClick={() => handleButtonClick(id, title)}>Save to Queue</button>
             </div>
         </div>
     );

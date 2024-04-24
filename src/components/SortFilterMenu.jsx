@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import DisplayAlteredMovieData from './DisplayAlteredMovieData';
 import { getAuthorization } from './FetchMovieData';
+import Login from './Login';
 
 const SortFilterMenu = () => {
     const [sortValue, setSortValue] = useState('date-asc');
@@ -35,8 +36,8 @@ const SortFilterMenu = () => {
     return (
         <div className="menu">
             <div className="login-register-container">
-                <a href='./Login.js' className="login">Login</a>
-                <a href='./register.html' className="register">Register</a>
+                <a href={Login} className="login">Login</a>
+                <a href='/register.html' className="register">Register</a>
             </div>
             <div className="search-container">
                 <input type="text" id="search-box" placeholder="Search for a movie..." autoComplete="on" value={movieTitle} onChange={handleMovieTitleChange} />
