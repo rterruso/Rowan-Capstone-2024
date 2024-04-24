@@ -23,8 +23,6 @@ body {
   background-color: #39434f;
 }
 
-
-
 /* #trending .movie {
   margin-bottom: 20px;
   border: 1px solid #ddd;
@@ -32,10 +30,6 @@ body {
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 } */
-
-.menu {
-  /*STYLES MENU FOR SEARCH BAR AND FILTER AND SORT STUFF*/
-}
 
 .login {
   margin-right: 5px;
@@ -59,7 +53,7 @@ body {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scrolling if content overflows */
-  background-color: transparent; /* Transparent black background */
+  background-color: black; /* Transparent black background */
   animation-name: slideIn; /* Animation for modal appearance */
   animation-duration: 0.4s;
 }

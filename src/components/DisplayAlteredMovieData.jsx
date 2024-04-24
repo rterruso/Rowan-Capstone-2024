@@ -3,19 +3,21 @@ import { mapGenres } from './GetGenresData';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-// const savetoqueue = require('../../server/routes/savetoqueue');
-
 const handleButtonClick = async (movieID, movieTitle) => {
-    const movieData = {
+    const data = {
         id: movieID,
         title: movieTitle
     };
 
-    await fetch('http://localhost:5000/savetoqueue', {
-        method: 'POST', // Use POST for sending data
-        headers: {}, // Set content type
-        body: JSON.stringify ({ id: movieData.id, title: movieData.title }), // Send data to be sent in body
-    })
+    const options = {
+        method: 'POST', // HTTP method
+        headers: {
+            accept: 'application/json' // Specify content type as JSON
+        },
+        body: JSON.stringify(data) // Convert data object to JSON string
+    };
+
+    await fetch('http://localhost:5000/savetoqueue', options)
         .then(response => response.text())
         .then(data => {
             alert('Movie sent successfully: ' + data);
