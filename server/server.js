@@ -1,5 +1,5 @@
 /**
- * app.js
+ * server.js
  * 
  * CinemaWorld February 4th, 2024
  * 
