@@ -17,9 +17,6 @@ router.get('/', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, '..','..', 'public', 'index.html'));
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
 
 router.post('/register', async (req, res) => {
     try {
