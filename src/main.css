@@ -53,13 +53,16 @@ body {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scrolling if content overflows */
-  background-color: black; /* Transparent black background */
+  background-color: transparent; /* Transparent black background */
   animation-name: slideIn; /* Animation for modal appearance */
   animation-duration: 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: black; /* White background for the modal window */
+  background-color: #fff; /* White background for the modal window */
   margin: auto; /* Center the modal horizontally */
   padding: 20px;
   border: 1px solid #ccc; /* Light gray border */
@@ -96,7 +99,7 @@ body {
   right: 10px;
   background-color: transparent; /* Remove default button background */
   border: none; /* Remove default button border */
-  color: white; /* Black close button text */
+  color: black; /* Black close button text */
   font-size: 20px; /* Larger font size for close button */
   cursor: pointer; /* Indicate clickable behavior */
 }
@@ -111,7 +114,7 @@ body {
 }
 
 .save-to-queue-button {
-  background-color: #4CAF50;
+  background-color: #008b8b;
   /* Green color */
   border: none;
   color: white;
@@ -125,7 +128,7 @@ body {
 }
 
 .save-to-queue-button:hover {
-  background-color: #45A049;
+  background-color: rgb(7, 69, 69);
   /* Darker green on hover */
 }
 
@@ -133,5 +136,3 @@ body {
   max-width: 150px;
   max-height: 250px;
 }
-
-

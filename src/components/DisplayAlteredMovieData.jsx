@@ -43,7 +43,7 @@ function MovieModal(props) {
                 <h5>Overview: {overview}</h5>
                 <h5>Release Date: {releaseDate}</h5>
                 <h5>Rating: {rating}</h5>
-                <h5>{genres}</h5>
+                <h5>Genres: {genres}</h5>
                 <button className="save-to-queue-button" onClick={() => handleButtonClick(id, title)}>Save to Queue</button>
             </div>
         </div>
@@ -53,13 +53,6 @@ function MovieModal(props) {
 MovieModal.propTypes = {
     movie: PropTypes.array.isRequired,
     onClose: PropTypes.func.isRequired,
-    // title: PropTypes.string.isRequired,
-    // overview: PropTypes.string.isRequired,
-    // releaseDate: PropTypes.string.isRequired,
-    // poster: PropTypes.string.isRequired,
-    // rating: PropTypes.number.isRequired,
-    // genres: PropTypes.array.isRequired,
-    // id: PropTypes.number.isRequired
 };
 
 const DisplayAlteredMovieData = (props) => {
@@ -231,13 +224,6 @@ DisplayAlteredMovieData.propTypes = {
     movieResults: PropTypes.array.isRequired,
     sortValue: PropTypes.string.isRequired,
     filterValue: PropTypes.string.isRequired,
-    // title: PropTypes.string.isRequired,
-    // overview: PropTypes.string.isRequired,
-    // releaseDate: PropTypes.string.isRequired,
-    // poster: PropTypes.string.isRequired,
-    // rating: PropTypes.number.isRequired,
-    // genres: PropTypes.array.isRequired,
-    // id: PropTypes.number.isRequired
 };
 
 export default DisplayAlteredMovieData;

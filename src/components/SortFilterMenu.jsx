@@ -2,7 +2,6 @@ import { useState } from 'react';
 import DisplayAlteredMovieData from './DisplayAlteredMovieData';
 import { getAuthorization } from './FetchMovieData';
 
-
 const SortFilterMenu = () => {
     const [sortValue, setSortValue] = useState('date-asc');
     const [filterValue, setFilterValue] = useState('all');
