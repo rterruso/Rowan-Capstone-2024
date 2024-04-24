@@ -14,18 +14,12 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "axios": "^1.6.8",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.20.2",
     "buffer": "^6.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-=======
-    "babel-polyfill": "^6.26.0",
-    "body-parser": "^1.20.2",
-    "buffer": "^6.0.3",
->>>>>>> 64257df2ca4d05c8d625de9a673d501e86c229e9
     "express": "^4.19.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.2",
@@ -34,11 +28,7 @@
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-router-dom": "^6.22.3",
-=======
-    "react-router-dom": "^6.23.0",
->>>>>>> 64257df2ca4d05c8d625de9a673d501e86c229e9
     "react-scripts": "^5.0.1",
     "request": "^2.88.2",
     "start": "^5.1.0",

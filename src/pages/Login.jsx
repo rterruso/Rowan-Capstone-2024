@@ -1,5 +1,3 @@
-<<<<<<< HEAD:src/components/Login.js
-=======
 /** 
  * 
  * Login.jsx
@@ -14,7 +12,6 @@
 
 
 
->>>>>>> 64257df2ca4d05c8d625de9a673d501e86c229e9:src/pages/Login.jsx
 import { useState } from 'react';
 
 function Login() {
@@ -103,11 +100,7 @@ function Login() {
                 <button type="submit" className="btn btn-lg btn-primary w-100 fs-6">Login</button>
               </div>
               <div className="row">
-<<<<<<< HEAD:src/components/Login.js
-                {/* <small>Don't have an account? <a href="/register.html">Sign Up</a></small> */}
-=======
                 <small> Don&#39;t have an account? <a href="/register.html">Sign Up</a></small>
->>>>>>> 64257df2ca4d05c8d625de9a673d501e86c229e9:src/pages/Login.jsx
               </div>
             </div>
           </form>
