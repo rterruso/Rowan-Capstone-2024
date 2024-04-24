@@ -1,14 +1,50 @@
-import React, { useState } from 'react';
-import '../css/style.css'; 
+/** 
+ * 
+ * Login.jsx
+ * 
+ * Osman Elias
+ * 
+ * 4/24/2024
+ * 
+ *  Login logic and html to generate the page
+ * 
+*/
+
+
+
+import { useState } from 'react';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle your login logic here
-    console.log(email, password);
+    const loginData = {
+      email: email,
+      password: password
+    };
+  
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+        credentials: 'include' // Needed for cookies 
+      });
+  
+      if (response.ok) {
+        console.log("Login successful");
+        // Redirect to homepage 
+        window.location.href = '/';
+      } else {
+        throw new Error('Failed to login');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (
@@ -16,7 +52,7 @@ function Login() {
       <div className="row border rounded-5 p-3 bg-white shadow box-area">
         <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ background: '#00011a' }}>
           <div className="featured-image mb-3">
-            <img src="../images/logo.png" className="img-fluid" alt="logo" style={{ width: '250px' }} />
+            <img src="/logo.png" className="img-fluid" alt="logo" style={{ width: '250px' }} />
           </div>
           <p className="text-white fs-2" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>Welcome Back!</p>
           <p className="text-white text-wrap text-center" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>What movie awaits you?</p>
@@ -32,7 +68,7 @@ function Login() {
               <div className="input-group mb-3">
                 <input 
                   name="email" 
-                  type="text" 
+                  type="email" 
                   className="form-control form-control-lg bg-light fs-6" 
                   placeholder="Email address" 
                   required 
@@ -64,7 +100,7 @@ function Login() {
                 <button type="submit" className="btn btn-lg btn-primary w-100 fs-6">Login</button>
               </div>
               <div className="row">
-                <small>Don't have an account? <a href="/register.html">Sign Up</a></small>
+                <small> Don&#39;t have an account? <a href="/register.html">Sign Up</a></small>
               </div>
             </div>
           </form>

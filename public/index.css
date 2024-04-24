@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(223, 193, 193, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -20,14 +20,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   padding-top: 80px;
+  background-color: #39434f;
 }
 
-.header {
-  background: #39434f;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-}
+
 
 /* #trending .movie {
   margin-bottom: 20px;
@@ -69,7 +65,7 @@ body {
 }
 
 .modal-content {
-  background-color: #fff; /* White background for the modal window */
+  background-color: black; /* White background for the modal window */
   margin: auto; /* Center the modal horizontally */
   padding: 20px;
   border: 1px solid #ccc; /* Light gray border */
@@ -143,3 +139,5 @@ body {
   max-width: 150px;
   max-height: 250px;
 }
+
+
