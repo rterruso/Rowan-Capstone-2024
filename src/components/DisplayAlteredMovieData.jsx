@@ -2,17 +2,18 @@ import { fetchTrendingMoviesData } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import QueueList from './FetchAndDisplayFromQueue';
 
 const handleButtonClick = async (movieID, movieTitle) => {
     const data = {
         id: movieID,
-        title: movieTitle
+        title: movieTitle,
     };
 
     const options = {
         method: 'POST', // HTTP method
         headers: {
-            accept: 'application/json' // Specify content type as JSON
+            'Content-Type': 'application/json' // Specify content type as JSON
         },
         body: JSON.stringify(data) // Convert data object to JSON string
     };
@@ -20,11 +21,11 @@ const handleButtonClick = async (movieID, movieTitle) => {
     await fetch('http://localhost:5000/savetoqueue', options)
         .then(response => response.text())
         .then(data => {
-            alert('Movie sent successfully: ' + data);
+            alert(data);
             // Handle successful response (e.g., display a success message)
         })
         .catch(error => {
-            alert('Error sending movie data: ' + error);
+            alert(error);
             // Handle errors (e.g., display an error message)
         });
 };
@@ -202,10 +203,11 @@ const DisplayAlteredMovieData = (props) => {
 
     return (
         <div className="movie-overview">
+            <QueueList/>
             <h2>Movies</h2>
-            <div>
+            <div className="movie-grid">
                 {movieRef.map((movie, index) => (
-                    <div key={index}>
+                    <div className="movie-card" key={index}>
                         <img className="movie-poster"
                             alt={movie.title}
                             src={"https://image.tmdb.org/t/p/original/" + movie.poster_path}

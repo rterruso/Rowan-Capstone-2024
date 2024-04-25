@@ -9,8 +9,9 @@ const User = require('../models/User');
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
+  } else {
+    res.redirect('/login');
   }
-  res.redirect('/login');
 }
 
 router.get('/', ensureAuthenticated, (req, res) => {
