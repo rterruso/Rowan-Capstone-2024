@@ -65,7 +65,7 @@ function Register() {
           <p className="text-white fs-2" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>Welcome Back!</p>
         </div>
         <div className="col-md-6 right-box">
-          <form onSubmit={handleRegister}> {/* Fixed the onSubmit handler */}
+          <form onSubmit={handleRegister}>
           
             <div className="header-text mb-4">
               <h2>CinemaWorld</h2>
@@ -117,8 +117,6 @@ function Register() {
             {/* Rest of your form content */}
             <div className="input-group mb-3" style={{ marginLeft: '15px' }}>
               <button type="submit" className="btn btn-lg btn-primary w-100 fs-6">Register</button>
-      
-
             </div>
           </form>
         </div>

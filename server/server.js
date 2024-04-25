@@ -36,7 +36,7 @@ app.use(session({
   cookie: { secure: false, httpOnly: true }
 }));
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(flash());
@@ -67,6 +67,14 @@ app.use((err, req, res, next) => {
   } else {
     res.status(statusCode).json({ error: 'Internal Server Error' });
   }
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500).json({
+    error: {
+      message: error.message || 'An unknown error occurred.',
+    },
+  });
 });
 
 //Middleware authenticating

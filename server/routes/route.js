@@ -19,7 +19,7 @@ router.get('/', ensureAuthenticated, (req, res) => {
 });
 
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   try {
     
     const { username, email, password } = req.body;
@@ -35,14 +35,15 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     // Check for a MongoDB duplicate key
     if (error.code === 11000) {
-      return res.status(400).send("Email or username already exists.");
+      return res.status(400).json({ error: "Email or username already exists." });
+
     }
     
     // Log the full error for debugging purposes
     console.error('Registration error:', error);
 
     // Send a generic error response
-    return res.status(500).send("An error occurred during registration.");
+    return res.status(400).json({error:"An error occurred during registration."});
   }
 });
 
