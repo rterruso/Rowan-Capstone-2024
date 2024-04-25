@@ -48,7 +48,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   box-shadow: none;
-  background-color: #242424;
+  background-color: #443C68;
 }
 
 .movie-card {
@@ -156,8 +156,9 @@ body {
 }
 
 .queue {
-  position: fixed;
+  position: relative;
   top: 5px; /* Adjust top position as needed */
   right: 5px;
   z-index: 1;
+  background-color: transparent;
 }

@@ -14,7 +14,7 @@
 
 import { useState } from 'react';
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,7 +26,7 @@ function Login() {
     };
   
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ function Login() {
       if (response.ok) {
         console.log("Login successful");
         // Redirect to homepage 
-        window.location.href = '/';
+        window.location.href = 'http://localhost:3000';
       } else {
         throw new Error('Failed to login');
       }
@@ -107,5 +107,3 @@ function Login() {
     </div>
   );
 }
-
-export default Login;

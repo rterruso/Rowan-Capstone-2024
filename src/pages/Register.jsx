@@ -13,7 +13,7 @@
 
 import { useState } from 'react';
 
-function Register() {
+export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,7 +34,7 @@ function Register() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/register', {
+      const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ function Register() {
 
       if (response.ok) {
         console.log("Registration successful");
-        window.location.href = '/login';
+        window.location.href = 'http://localhost:3000/login';
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to register');
@@ -124,5 +124,3 @@ function Register() {
     </div>
   );
 }
-
-export default Register;

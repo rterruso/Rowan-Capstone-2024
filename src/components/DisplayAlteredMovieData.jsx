@@ -203,7 +203,9 @@ const DisplayAlteredMovieData = (props) => {
 
     return (
         <div className="movie-overview">
-            <QueueList/>
+            <div className='queue'>
+                <QueueList/>
+            </div>
             <h2>Movies</h2>
             <div className="movie-grid">
                 {movieRef.map((movie, index) => (

@@ -90,7 +90,6 @@ app.get('/', ensureAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, '..','..', 'public', 'index.html'));
 });
 
-
 app.post('/register', async (req, res) => {
   try {
     
@@ -99,11 +98,10 @@ app.post('/register', async (req, res) => {
     // Create a new User instance with the extracted fields
     const newUser = new User({ username, email, password });
 
-   
     await newUser.save();
 
     // Redirect to login on successful registration
-    res.redirect('/login');
+    res.redirect('http://localhost:3000/login');
   } catch (error) {
     // Check for a MongoDB duplicate key
     if (error.code === 11000) {
@@ -125,7 +123,7 @@ app.post('/login', passport.authenticate('local', {
 }));
 
 // Start server
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)).on('error', (err) => {
   console.error('Failed to start server:', err);
 });
