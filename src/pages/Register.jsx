@@ -10,7 +10,6 @@
  * 
 */
 
-
 import { useState } from 'react';
 
 export default function Register() {
@@ -23,6 +22,7 @@ export default function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
+      alert("Passwords don't match.");
       console.error("Passwords don't match.");
       return;
     }
@@ -33,26 +33,27 @@ export default function Register() {
       password: password,
     };
 
-    try {
-      const response = await fetch('http://localhost:3000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerData),
-        credentials: 'include', // Needed for cookies
-      });
+    const options = {
+      method: 'POST', // HTTP method
+      headers: {
+        'Content-Type': 'application/json' // Specify content type as JSON
+      },
+      body: JSON.stringify(registerData), // Convert data object to JSON string
+      credentials: 'include' // Needed for cookies 
+    };
 
-      if (response.ok) {
-        console.log("Registration successful");
-        window.location.href = 'http://localhost:3000/login';
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to register');
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-    }
+    await fetch('http://localhost:8080/register', options)
+      .then(response => response.json())
+      .then(data => {
+        alert("Registration successful");
+        console.log (data);
+        window.location.href = '/login';
+        // Handle successful response (e.g., display a success message)
+      })
+      .catch(error => {
+        alert('Registration error: ' + error.message);
+        // Handle errors (e.g., display an error message)
+      });
   };
 
   return (
@@ -62,7 +63,8 @@ export default function Register() {
         <div className="featured-image mb-3">
             <img src="/logo.png" className="img-fluid" alt="logo" style={{ width: '250px' }} />
           </div>
-          <p className="text-white fs-2" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>Welcome Back!</p>
+          <p className="text-white fs-2" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>Welcome to CinemaWorld!</p>
+          <p className="text-white text-wrap text-center" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 600 }}>Create an account to see what awaits!</p>
         </div>
         <div className="col-md-6 right-box">
           <form onSubmit={handleRegister}>

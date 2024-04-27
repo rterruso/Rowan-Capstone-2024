@@ -74,7 +74,7 @@ app.get('/fetchfromqueue', async (req, res) => {
         return res.send(movies);
     } catch (error) {
         console.error('Error fetching data from the queue: ' + error.message);
-        return res.send({ error: 'Error fetching data from the queue' });
+        return res.send({ error: 'Error fetching user information: ' + error.message });
     }
 });
 

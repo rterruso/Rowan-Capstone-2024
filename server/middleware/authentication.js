@@ -42,7 +42,6 @@ async (email, password, done) => {
 }
 ));
 
-
 // Serialize and deserialize user for session management
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -56,7 +55,6 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
-
 
 // Export authentication-related functions
 module.exports = {

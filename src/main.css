@@ -162,3 +162,11 @@ body {
   z-index: 1;
   background-color: transparent;
 }
+
+.user-welcome-container {
+  position: absolute;
+  top: 0; /* Position at the top */
+  left: 0; /* Position at the left */
+  padding: 10px; /* Add padding for better readability */
+  color: #393053;
+}

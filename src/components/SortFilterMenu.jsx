@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getAuthorization } from './FetchMovieData';
 import DisplayAlteredMovieData from './DisplayAlteredMovieData';
+import WelcomeUser from './WelcomeUser.jsx';
 import Login from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
 
@@ -44,9 +45,12 @@ const SortFilterMenu = () => {
     
     return (
         <div className="menu">
+            <div className="user-welcome-container">
+                <WelcomeUser/>
+            </div>
             <div className="login-register-container">
-                <a href='/login' onClick={handleLogin} className="login">Login</a>
-                <a href='/register' onClick={handleRegister} className="register">Register</a>
+                <a href='/Login' onClick={handleLogin} className="login">Login</a>
+                <a href='/Register' onClick={handleRegister} className="register">Register</a>
             </div>
             <div className="search-container">
                 <input type="text" id="search-box" placeholder="Search for a movie..." autoComplete="on" value={movieTitle} onChange={handleMovieTitleChange} />

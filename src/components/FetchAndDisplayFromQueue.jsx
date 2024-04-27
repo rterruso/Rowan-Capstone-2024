@@ -16,12 +16,13 @@ function QueueList() {
                 // Update state with fetched movie data
                 setMovieQueue(data);
                 setQueueCount(data.length);
+                console.log (queueCount);
             } catch (error) {
                 console.error('Error fetching movie data:', error);
             }
         };
         fetchMovies();
-    }, [queueCount]);
+    }, [movieQueue]);
 
     return (
         <div className="queue">
