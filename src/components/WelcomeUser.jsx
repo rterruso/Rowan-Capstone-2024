@@ -9,7 +9,12 @@ const WelcomeUser = () => {
       await fetch('http://localhost:8080/fetch-user')
         .then(response => response.json())
         .then(data => {
-          setUsername(data.username);
+          if (data.status == 400) {
+            alert (data.message);
+          } else if (data.status == 201) {
+            setUsername(data.username);
+            alert ("username sueccesfuuly aquired");
+          }
           console.log(data); // Log the response from fetch-user endpoint
         })
         .catch(error => {

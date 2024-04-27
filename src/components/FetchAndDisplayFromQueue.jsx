@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 function QueueList() {
     const [movieQueue, setMovieQueue] = useState([]);
-    const [queueCount, setQueueCount] = useState(0);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -15,8 +14,6 @@ function QueueList() {
                 const data = await response.json();
                 // Update state with fetched movie data
                 setMovieQueue(data);
-                setQueueCount(data.length);
-                console.log (queueCount);
             } catch (error) {
                 console.error('Error fetching movie data:', error);
             }

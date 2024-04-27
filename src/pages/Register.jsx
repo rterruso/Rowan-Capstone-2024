@@ -38,20 +38,25 @@ export default function Register() {
       headers: {
         'Content-Type': 'application/json' // Specify content type as JSON
       },
-      body: JSON.stringify(registerData), // Convert data object to JSON string
-      credentials: 'include' // Needed for cookies 
+      body: JSON.stringify(registerData) // Convert data object to JSON string
+      // credentials: 'include' // SCREWED UP THE FETCH RANDOMLY Needed for cookies 
     };
 
     await fetch('http://localhost:8080/register', options)
       .then(response => response.json())
       .then(data => {
-        alert("Registration successful");
+        if (data.status == 400) {
+          alert (data.message);
+        } else if (data.status == 201){
+          alert(data.message);
+          window.location.href = '/Login';
+        }
+
         console.log (data);
-        window.location.href = '/login';
         // Handle successful response (e.g., display a success message)
       })
       .catch(error => {
-        alert('Registration error: ' + error.message);
+        alert('Registration error: ' + error);
         // Handle errors (e.g., display an error message)
       });
   };

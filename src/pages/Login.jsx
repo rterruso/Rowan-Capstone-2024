@@ -29,17 +29,20 @@ export default function Login() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(loginData), // Convert data object to JSON string
-      credentials: 'include' // Needed for cookies 
+      body: JSON.stringify(loginData) // Convert data object to JSON string
+      // credentials: 'include' // SCREWED UP THE FETCH RANDOMLY Needed for cookies 
     };
 
     await fetch('http://localhost:8080/login', options)
       .then(response => response.json())
       .then(data => {
-        alert(data);
-        // window.location.href = 'http://localhost:3000';
+        if (data.status == 400) {
+          alert (data.message);
+        } else if (data.status == 201){
+          alert(data.message);
+          window.location.href = 'http://localhost:3000';
+        }
         console.log (data);
-        // Handle successful response (e.g., display a success message)
       })
       .catch(error => {
         alert('Login error: ' + error.message);

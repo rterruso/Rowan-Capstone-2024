@@ -10,6 +10,7 @@
  * 
  */
 
+
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -22,7 +23,8 @@ const flash = require('connect-flash');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const app = express();
-const User = require('../server/models/User');
+const bcrypt = require('bcrypt');
+const User = require('../server/models/User.cjs');
 
 app.use(helmet()); // Set security-related HTTP headers
 app.use(rateLimit({ // Basic rate-limiting middleware
@@ -42,7 +44,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(flash());
 
-const authMiddleware = require('./middleware/authentication');
+const authMiddleware = require('./middleware/authentication.cjs');
 app.use(authMiddleware.initialize());
 app.use(authMiddleware.session());
 
@@ -91,45 +93,29 @@ app.use((err, req, res, next) => {
 //   res.sendFile(path.join(__dirname, '..','..', 'public', 'index.html'));
 // });
 
-app.get('/fetch-user', async (req, res) => {
-  try {
-    const username = req.query.username;
-
-    // Check if user is authenticated
-    if (!username) {
-      return res.status(401).send({ message: 'User is not authenticated.' });
-    }
-    // Return the username of the logged-in user
-    return res.send({ username: username });
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    res.status(500).send({ message: 'An error occurred while fetching user.' });
-  }
-});
-
 app.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    console.log (existingUser != null);
 
-    if (existingUser) {
-      return res.status(400).send("User with this email or username already exists.");
+    if (existingUser != null) {
+      return res.send({ status: 400, message: "User with this email or username already exists." });
+    } else {
+      // Create a new User instance with the extracted fields
+      const newUser = new User({ username, email, password });
+
+      await newUser.save();
+
+      return res.send({ status: 201, message: "User succesfully registered!" })
     }
-
-    // Create a new User instance with the extracted fields
-    const newUser = new User({ username, email, password });
-
-    await newUser.save();
-
-    // Redirect to login on successful registration
-    res.redirect('http://localhost:8080/login');
   } catch (error) {
     // Log the full error for debugging purposes
     console.error('Registration error: ' + error);
 
     // Send a generic error response
-    return res.status(500).send("An error occurred during registration.");
+    return res.send("An error occurred during registration.");
   }
 });
 
@@ -141,34 +127,54 @@ app.post('/register', async (req, res) => {
 // }
 // ));
 
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  console.log ("in the login");
+const extractUsernameMiddleware = (req, res, next) => {
+  // Assuming the username is sent in the request body
+  const { username } = req.body.email;
+  req.username = username; // Attach username to the request object
+  next(); // Pass control to the next middleware or route handler
+};
 
+app.post('/login', extractUsernameMiddleware, async (req, res) => {
+  const { email, password } = req.body;
+  
   try {
     // Find user by email
     const user = await User.findOne({ email });
 
     // If user not found or password does not match, return error
-    if (!user || !(await bcrypt.comparePassword(password, user.password))) {
-      return res.status(401).text({ message: 'Incorrect email or password.' });
+    if (!user || !(await user.comparePassword(password, user.password))) {
+      return res.send({ status: 400, message: 'Incorrect email or password.' });
+    } else {
+      // If authentication successful, you can manually establish a session for the user
+      req.session.user = {
+        username: user.username,
+        email: user.email,
+        // Add any other user data you need in the session
+      };
+
+      // res.redirect(`/fetch-user?username=${user.username}`);
+      return res.send({ status: 201, message: 'User logged in successfully.' });
     }
-
-    // If authentication successful, you can manually establish a session for the user
-    req.session.user = {
-      username: user.username,
-      email: user.email,
-      // Add any other user data you need in the session
-    };
-
-    // Redirect or send response indicating successful login
-    res.redirect('http://localhost:3000'); // Redirect to dashboard after successful login
-    res.redirect(`/fetch-user?username=${user.username}`);
-
-    return res.send ({ message: 'User logged in successfully.' });
   } catch (error) {
     console.error('Login error: ' + error);
-    return res.status(500).json({ message: 'An error occurred during login.' });
+    return res.send({ message: 'An error occurred during login.' });
+  }
+});
+
+app.get('/fetch-user', async (req, res) => {
+  try {
+    const username = req.username;
+
+    // Check if user is authenticated
+    if (!username) {
+      return res.send({ status: 400, message: 'User is not authenticated.' });
+    } else {
+      return res.send({ status: 201, username: username });
+    }
+    // Return the username of the logged-in user
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return res.send({ status: 400, message: 'An error occurred while fetching user.' });
   }
 });
 
