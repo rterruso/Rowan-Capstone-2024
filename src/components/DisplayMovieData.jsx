@@ -1,4 +1,4 @@
-import { fetchTrendingMoviesData } from './FetchMovieData';
+import { fetchTrendingMoviesData, getAuthorization } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -30,16 +30,53 @@ const handleButtonClick = async (movieID, movieTitle) => {
         });
 };
 
+function GetMovieTrailer (id) {
+    const [youtubeURL, setYoutubeURL] = useState('');
+
+    const API_KEY = 'd7dd778d2f341c096662f9f44263b64e';
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`, getAuthorization())
+                .then(response => response.text())
+                .then(data => {
+                    const movieData = JSON.parse (data);
+                    if (!data) {
+                        return "No trailer available";
+                    } else {
+                        const trailerData = movieData.results.find(
+                            (video) => video.official && video.type === 'Trailer'
+                        );
+
+                        setYoutubeURL(`https://www.youtube.com/embed/${trailerData.key}`);
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                    // Handle errors (e.g., display an error message)
+                });
+        };
+        fetchData();
+    }, [id]);
+
+    return youtubeURL;
+}
+
 function MovieModal(props) {
     const { movie, onClose } = props;
     let title = movie.title, overview = movie.overview, releaseDate = movie.release_date,
-        poster = movie.poster_path, rating = Math.round(movie.vote_average * 10) / 10, genres = mapGenres(movie), id = movie.id;
+        poster = movie.poster_path, rating = Math.round(movie.vote_average * 10) / 10, genres = mapGenres(movie), id = movie.id, trailerURL = GetMovieTrailer(id);
 
     return (
         <div className="modal">
             <div className="modal-content">
                 <h5 className='close-button' onClick={onClose}>&times;</h5>
                 <img className="modal-poster" alt={title} src={"https://image.tmdb.org/t/p/original/" + poster} />
+                {trailerURL ? (
+                    <iframe className="movie-trailer" width="560" height="315" src={trailerURL} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                ) : (
+                    <p>No trailer available</p>
+                )}
                 <h5>{title}</h5>
                 <h5>Overview: {overview}</h5>
                 <h5>Release Date: {releaseDate}</h5>
@@ -56,7 +93,7 @@ MovieModal.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-const DisplayAlteredMovieData = (props) => {
+const DisplayMovieData = (props) => {
     const { movieResults, sortValue, filterValue } = props;
     const [movies, setMovieData] = useState([]);
     const [movieCount, setMovieCount] = useState(0);
@@ -224,10 +261,10 @@ const DisplayAlteredMovieData = (props) => {
     );
 }
 
-DisplayAlteredMovieData.propTypes = {
+DisplayMovieData.propTypes = {
     movieResults: PropTypes.array.isRequired,
     sortValue: PropTypes.string.isRequired,
     filterValue: PropTypes.string.isRequired,
 };
 
-export default DisplayAlteredMovieData;
+export default DisplayMovieData;

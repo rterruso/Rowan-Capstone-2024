@@ -127,14 +127,7 @@ app.post('/register', async (req, res) => {
 // }
 // ));
 
-const extractUsernameMiddleware = (req, res, next) => {
-  // Assuming the username is sent in the request body
-  const { username } = req.body.email;
-  req.username = username; // Attach username to the request object
-  next(); // Pass control to the next middleware or route handler
-};
-
-app.post('/login', extractUsernameMiddleware, async (req, res) => {
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
   try {
@@ -152,8 +145,7 @@ app.post('/login', extractUsernameMiddleware, async (req, res) => {
         // Add any other user data you need in the session
       };
 
-      // res.redirect(`/fetch-user?username=${user.username}`);
-      return res.send({ status: 201, message: 'User logged in successfully.' });
+      return res.send({ username: user.username, status: 201, message: 'User logged in successfully.' });
     }
   } catch (error) {
     console.error('Login error: ' + error);
@@ -163,7 +155,8 @@ app.post('/login', extractUsernameMiddleware, async (req, res) => {
 
 app.get('/fetch-user', async (req, res) => {
   try {
-    const username = req.username;
+    const username = JSON.parse(req.body.username);
+    console.log (username);
 
     // Check if user is authenticated
     if (!username) {

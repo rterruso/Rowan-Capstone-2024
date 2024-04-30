@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { getAuthorization } from './FetchMovieData';
-import DisplayAlteredMovieData from './DisplayAlteredMovieData';
-import WelcomeUser from './WelcomeUser.jsx';
-import Login from '../pages/Login.jsx';
+import DisplayMovieData from './DisplayMovieData.jsx';
+import Login, {WelcomeUser} from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
 
 const SortFilterMenu = () => {
@@ -36,6 +35,7 @@ const SortFilterMenu = () => {
     };
 
     const handleLogin = () => {
+        WelcomeUser ();
         return (Login);
     };
 
@@ -45,9 +45,7 @@ const SortFilterMenu = () => {
     
     return (
         <div className="menu">
-            <div className="user-welcome-container">
-                <WelcomeUser/>
-            </div>
+            <WelcomeUser />
             <div className="login-register-container">
                 <a href='/Login' onClick={handleLogin} className="login">Login</a>
                 <a href='/Register' onClick={handleRegister} className="register">Register</a>
@@ -95,7 +93,7 @@ const SortFilterMenu = () => {
                     </select>
                 </div>
             </div>
-            <DisplayAlteredMovieData movieResults={movieResults} sortValue={sortValue} filterValue={filterValue} />
+            <DisplayMovieData movieResults={movieResults} sortValue={sortValue} filterValue={filterValue} />
         </div>
     );
 }
