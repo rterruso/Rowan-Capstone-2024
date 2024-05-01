@@ -1,9 +1,24 @@
-import { useContext } from 'react';
-import { UsernameContext } from '../pages/Login.jsx';
+import { useState, useEffect } from 'react';
+ 
+export function WelcomeUser () {
+  const [username, setUsername] = useState('');
 
-function WelcomeUser () {
-  const username = useContext(UsernameContext);
-  alert (username);
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/fetch-username');
+        const data = await response.json();
+        if (data.status == 400) {
+          alert(data.message);
+        } else if (data.status == 201) {
+          setUsername(data.username);
+        }
+      } catch (error) {
+        console.error('Error fetching movie data:', error);
+      }
+    };
+    fetchUsername();
+  }, [username]);
 
   return (
     <div className="user-welcome-container">
@@ -11,7 +26,7 @@ function WelcomeUser () {
         {username ? (
           <p>Welcome, {username}!</p>
         ) : (
-          <p>Username is not set</p>
+          <p>You are currently logged out</p>
         )}
       </div>
     </div>

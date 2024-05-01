@@ -41,6 +41,7 @@ function GetMovieTrailer (id) {
                 .then(response => response.text())
                 .then(data => {
                     const movieData = JSON.parse (data);
+                    
                     if (!data) {
                         return "No trailer available";
                     } else {
@@ -52,7 +53,8 @@ function GetMovieTrailer (id) {
                     }
                 })
                 .catch(error => {
-                    alert(error);
+                    alert("Cannot fetch movie trailer url");
+                    console.log (error);
                     // Handle errors (e.g., display an error message)
                 });
         };

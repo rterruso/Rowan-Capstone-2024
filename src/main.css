@@ -169,5 +169,9 @@ body {
   top: 0; /* Position at the top */
   left: 0; /* Position at the left */
   padding: 10px; /* Add padding for better readability */
-  color: #393053;
+  color: whitesmoke;
+}
+
+.movie-trailer {
+  margin-bottom: 10px;
 }

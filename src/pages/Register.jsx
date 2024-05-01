@@ -73,7 +73,6 @@ export default function Register() {
         </div>
         <div className="col-md-6 right-box">
           <form onSubmit={handleRegister}>
-          
             <div className="header-text mb-4">
               <h2>CinemaWorld</h2>
             </div>

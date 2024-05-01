@@ -10,14 +10,10 @@
  * 
 */
 
-import { useContext, createContext, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-const UsernameContext = createContext('');
-
-function Login ({ children }) {
+function Login () {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async (e) => {
@@ -44,7 +40,6 @@ function Login ({ children }) {
           alert (data.message);
         } else if (data.status == 201){
           alert(data.message);
-          setUsername(email);
           window.location.href = 'http://localhost:3000';
         }
         console.log (data);
@@ -57,9 +52,6 @@ function Login ({ children }) {
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100" >
-      <UsernameContext.Provider value={username}>
-        {children}
-      </UsernameContext.Provider>
       <div className="row border rounded-5 p-4 bg-white shadow box-area"  >
         <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ background: '#00011a' }}>
           <div className="featured-image mb-3">
@@ -118,24 +110,4 @@ function Login ({ children }) {
   );
 }
 
-Login.propTypes = {
-  children: PropTypes.string.isRequired
-};
-
-export function WelcomeUser () {
-  const username = useContext(UsernameContext);
-
-  return (
-    <div className="user-welcome-container">
-      <div>
-        {username ? (
-          <p>Welcome, {username}!</p>
-        ) : (
-          <p>User is not logged in</p>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default UsernameContext;
+export default Login;

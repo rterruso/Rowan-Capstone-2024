@@ -14,6 +14,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require("cookie-parser");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
@@ -32,12 +33,14 @@ app.use(rateLimit({ // Basic rate-limiting middleware
   max: 100 // Limit each IP to 100 requests per windowMs
 }));
 // app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true }
-}));
+  saveUninitialized: true,
+  cookie: { secure: false, expires: 60000 }
+  }
+));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -139,13 +142,10 @@ app.post('/login', async (req, res) => {
       return res.send({ status: 400, message: 'Incorrect email or password.' });
     } else {
       // If authentication successful, you can manually establish a session for the user
-      req.session.user = {
-        username: user.username,
-        email: user.email,
-        // Add any other user data you need in the session
-      };
+      req.session.user = user.username;
+      req.session.save();
 
-      return res.send({ username: user.username, status: 201, message: 'User logged in successfully.' });
+      return res.send({ status: 201, message: 'User logged in successfully.' });
     }
   } catch (error) {
     console.error('Login error: ' + error);
@@ -153,22 +153,25 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/fetch-user', async (req, res) => {
+app.get('/fetch-username', async (req, res) => {
   try {
-    const username = JSON.parse(req.body.username);
-    console.log (username);
-
-    // Check if user is authenticated
-    if (!username) {
+    if (!req.session.user) {
       return res.send({ status: 400, message: 'User is not authenticated.' });
     } else {
+      const username = req.session.user.username; // Access username from session
+      console.log(username);
       return res.send({ status: 201, username: username });
     }
-    // Return the username of the logged-in user
   } catch (error) {
     console.error('Error fetching user:', error);
     return res.send({ status: 400, message: 'An error occurred while fetching user.' });
   }
+});
+
+// Logout page 
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.send("Your are logged out ");
 });
 
 // Start server
