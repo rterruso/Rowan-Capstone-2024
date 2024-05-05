@@ -13,14 +13,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Use viewport height to fill the screen */
+}
+
+
 body {
+  height: 100%;
   margin: 0px;
   padding: 0px;
   display: flex;
+  flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
   padding-top: 80px;
-  background-color: #242424;
+  background-color: #443C68;
 }
 
 .login {
@@ -49,20 +58,32 @@ body {
   border-radius: 5px;
   box-shadow: none;
   background-color: #443C68;
+  width: 1300px;
 }
 
-.movie-card {
-  background-color: #443C68;
-  display: inline-block;
-  margin: 5px;
-  filter: drop-shadow(5px 5px black);
-}
 
 .movie-grid {
   background-color: #635985;
   display:grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-gap: 15px;
+  padding: 0 10px;
+  width: 100%; 
+  min-height: 100%; 
+  margin: 0 auto;
+  align-items: stretch;
 }
+
+.movie-card {
+  background-color: #443C68;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center items horizontally in the card */
+  margin: 5px;
+  filter: drop-shadow(5px 5px black);
+  border-radius: 8px;
+}
+
 
 .modal {
   position: fixed; /* Stays in place regardless of scrolling */
