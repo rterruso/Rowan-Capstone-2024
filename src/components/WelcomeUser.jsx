@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
  
 export function WelcomeUser () {
   const [username, setUsername] = useState('');
@@ -21,15 +22,15 @@ export function WelcomeUser () {
   }, [username]);
 
   return (
-    <div className="user-welcome-container">
-      <div>
-        {username ? (
-          <p>Welcome, {username}!</p>
-        ) : (
-          <p>You are currently logged out</p>
-        )}
-      </div>
+    <div className="sidebar">
+      <h3>Navigation</h3>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/login">Login</Link></li>
+        <li><Link to="/register">Register</Link></li>
+      </ul>
     </div>
+    
   );
 }
 

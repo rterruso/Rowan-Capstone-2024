@@ -29,7 +29,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   padding-top: 80px;
-  background-color: #443C68;
+  background-color: #635985;
 }
 
 .login {
@@ -57,7 +57,7 @@ body {
   padding: 10px;
   border-radius: 5px;
   box-shadow: none;
-  background-color: #443C68;
+  background-color: #635985;
   width: 1300px;
 }
 
@@ -68,17 +68,16 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 15px;
   padding: 0 10px;
-  width: 100%; 
-  min-height: 100%; 
-  margin: 0 auto;
+  width: 123%; 
   align-items: stretch;
+  margin-left: 1px;
 }
 
 .movie-card {
-  background-color: #443C68;
+  background-color: #635985;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
-  align-items: center; /* Center items horizontally in the card */
+  flex-direction: column; 
+  align-items: center; 
   margin: 5px;
   filter: drop-shadow(5px 5px black);
   border-radius: 8px;
@@ -86,14 +85,14 @@ body {
 
 
 .modal {
-  position: fixed; /* Stays in place regardless of scrolling */
-  z-index: 1; /* Overlays other content */
+  position: fixed; 
+  z-index: 1; 
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scrolling if content overflows */
-  background-color: transparent; /* Transparent black background */
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: transparent; 
   animation-name: slideIn; /* Animation for modal appearance */
   animation-duration: 0.4s;
   display: flex;
@@ -101,11 +100,11 @@ body {
 
 .modal-content {
   background-color: white; /* White background for the modal window */
-  margin: auto; /* Center the modal horizontally */
+  margin: auto; 
   padding: 20px;
-  border: 1px solid #ccc; /* Light gray border */
-  border-radius: 4px; /* Rounded corners for a softer look */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
   animation-name: fadeInContent; /* Animation for modal content appearance */
   color: black;
   animation-duration: 0.3s;
@@ -130,32 +129,33 @@ body {
     opacity: 0; /* Initially transparent */
   }
   to {
-    opacity: 1; /* Fade in to full opacity */
+    opacity: 1; 
   }
 }
 
 .close-button {
-  position: absolute; /* Position close button in top right corner */
+  position: absolute; 
   top: 10px;
   right: 10px;
-  background-color: transparent; /* Remove default button background */
-  border: none; /* Remove default button border */
-  color: #242424; /* Black close button text */
-  font-size: 20px; /* Larger font size for close button */
-  cursor: pointer; /* Indicate clickable behavior */
+  background-color: transparent; 
+  border: none; 
+  color: #242424; 
+  font-size: 20px; 
+  cursor: pointer; 
 }
 
 .close-button:hover {
-  color: darkgoldenrod; /* Change close button color on hover for feedback */
+  color: darkgoldenrod; 
 }
 
 .modal-poster {
   width: 30%; /* Display image full width within content area */
-  margin-bottom: 1rem; /* Add some space between image and text */
+  margin-bottom: 1rem; 
+  margin-right: 650px;
 }
 
 .save-to-queue-button {
-  background-color: #393053;
+  background-color: #635985;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -187,12 +187,51 @@ body {
 
 .user-welcome-container {
   position: absolute;
-  top: 0; /* Position at the top */
-  left: 0; /* Position at the left */
+  top: 0; 
+  left: 0; 
   padding: 10px; /* Add padding for better readability */
   color: whitesmoke;
 }
 
 .movie-trailer {
-  margin-bottom: 10px;
+  margin-bottom: 250px;
+  position: absolute;
+  right: 150px;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+  width: 320px; 
+  background-color: #333; 
+  color: white; /* Light text color */
+  padding: 20px; /* Padding inside the sidebar */
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  height: 153%; /* Full height */
+}
+
+.content {
+  flex-grow: 1; 
+  background-color: #f4f4f4; 
+  padding: 20px; 
+  overflow-y: auto; /* Add scroll to content if needed */
+}
+
+.sidebar ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+}
+
+.sidebar ul li a {
+  color: white; /* White color for links */
+  text-decoration: none; /* No underline */
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline; 
 }
