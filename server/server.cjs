@@ -10,7 +10,6 @@
  * 
  */
 
-
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -27,18 +26,18 @@ const app = express();
 const bcrypt = require('bcrypt');
 const User = require('../server/models/User.cjs');
 
+app.set('view engine', 'ejs');
 app.use(helmet()); // Set security-related HTTP headers
 app.use(rateLimit({ // Basic rate-limiting middleware
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // Limit each IP to 100 requests per windowMs
 }));
-// app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, expires: 60000 }
+  cookie: { expires: 60000 }
   }
 ));
 app.use(cors());
@@ -92,8 +91,16 @@ app.use((err, req, res, next) => {
 //   }
 // }
 
-// app.get('/', ensureAuthenticated, (req, res) => {
-//   res.sendFile(path.join(__dirname, '..','..', 'public', 'index.html'));
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// app.get('/', (req, res) => {
+//   const sessionData = req.session;
+//   res.sendFile(path.join(__dirname, '..','..', 'Rowan-Capstone-2024/public', 'index.html'));
+// });
+
+// app.get('/', (req, res) => {
+
+//   res.redirect('http://localhost:3000');
 // });
 
 app.post('/register', async (req, res) => {
@@ -142,7 +149,8 @@ app.post('/login', async (req, res) => {
       return res.send({ status: 400, message: 'Incorrect email or password.' });
     } else {
       // If authentication successful, you can manually establish a session for the user
-      req.session.user = user.username;
+      req.session.isLoggedIn = true;
+      req.session.username = user.username;
       req.session.save();
 
       return res.send({ status: 201, message: 'User logged in successfully.' });
@@ -155,10 +163,10 @@ app.post('/login', async (req, res) => {
 
 app.get('/fetch-username', async (req, res) => {
   try {
-    if (!req.session.user) {
-      return res.send({ status: 400, message: 'User is not authenticated.' });
+    if (!req.session.isLoggedIn) {
+      return res.send({ status: 401, message: 'User is not authenticated.' });
     } else {
-      const username = req.session.user.username; // Access username from session
+      const username = req.session.username; // Access username from session
       console.log(username);
       return res.send({ status: 201, username: username });
     }
@@ -171,7 +179,7 @@ app.get('/fetch-username', async (req, res) => {
 // Logout page 
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  res.send("Your are logged out ");
+  return res.send({ message: "You are logged out " });
 });
 
 // Start server

@@ -10,11 +10,13 @@
  * 
 */
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import UsernameContext from '../components/UsernameContext.js';
 
 function Login () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUsername } = useContext(UsernameContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -40,6 +42,7 @@ function Login () {
           alert (data.message);
         } else if (data.status == 201){
           alert(data.message);
+          setUsername(email);
           window.location.href = 'http://localhost:3000';
         }
         console.log (data);

@@ -1,16 +1,21 @@
 import { useState } from 'react';
-import { getAuthorization } from './FetchMovieData';
+import { getAuthorization } from './FetchMovieData.js';
 import DisplayMovieData from './DisplayMovieData.jsx';
-import Login from '../pages/Login.jsx';
-import WelcomeUser from './WelcomeUser.jsx';
-import Register from '../pages/Register.jsx';
+// import Login from '../pages/Login.jsx';
+// import Register from '../pages/Register.jsx';
+// import WelcomeUser from './WelcomeUser.jsx';
+// import WelcomeMessage from './WelcomeMessage.jsx';
+import { useNavigate } from 'react-router-dom';
 
-const SortFilterMenu = () => {
+const MainPage = () => {
+    const navigate = useNavigate();
+
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [sortValue, setSortValue] = useState('date-asc');
     const [filterValue, setFilterValue] = useState('all');
     const [movieTitle, setMovieTitle] = useState('');
     const [movieResults, setMovieResults] = useState([]);
-
+    
     const handleSortSelect = (event) => {
         setSortValue(event.target.value);
     };
@@ -35,20 +40,26 @@ const SortFilterMenu = () => {
         setMovieResults(movieResults);
     };
 
-    const handleLogin = () => {
-        return (Login);
+    const handleLoginClick = () => {
+        navigate('/Login');
+        // setIsLoggedIn(true);
     };
 
-    const handleRegister = () => {
-        return (Register);
+    const handleRegisterClick = () => {
+        navigate('/Register');
     };
+
+    // const handleLogoutClick = () => {
+    //     setIsLoggedIn(false);
+    // }
     
     return (
         <div className="menu">
-            <WelcomeUser/>
+            {/* <WelcomeMessage /> */}
+            {/* <WelcomeUser /> */}
             <div className="login-register-container">
-                <a href='/Login' onClick={handleLogin} className="login">Login</a>
-                <a href='/Register' onClick={handleRegister} className="register">Register</a>
+                <button onClick={handleLoginClick} className="login">Login</button>
+                <button onClick={handleRegisterClick} className="register">Register</button>
             </div>
             <div className="search-container">
                 <input type="text" id="search-box" placeholder="Search for a movie..." autoComplete="on" value={movieTitle} onChange={handleMovieTitleChange} />
@@ -98,4 +109,4 @@ const SortFilterMenu = () => {
     );
 }
 
-export default SortFilterMenu;
+export default MainPage;
