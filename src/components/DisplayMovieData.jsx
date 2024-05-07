@@ -2,7 +2,7 @@ import { fetchTrendingMoviesData, getAuthorization } from './FetchMovieData';
 import { mapGenres } from './GetGenresData';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import QueueList from './FetchAndDisplayFromQueue';
+
 
 const handleButtonClick = async (movieID, movieTitle) => {
     const data = {
@@ -242,10 +242,6 @@ const DisplayMovieData = (props) => {
 
     return (
         <div className="movie-overview">
-            <div className='queue'>
-                <QueueList/>
-            </div>
-            <h2>Movies</h2>
             <div className="movie-grid">
                 {movieRef.map((movie, index) => (
                     <div className="movie-card" key={index}>

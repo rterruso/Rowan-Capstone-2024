@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
- 
-export function WelcomeUser () {
+
+
+export function WelcomeUser() {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
@@ -9,28 +9,25 @@ export function WelcomeUser () {
       try {
         const response = await fetch('http://localhost:8080/fetch-username');
         const data = await response.json();
-        if (data.status == 400) {
-          alert(data.message);
-        } else if (data.status == 201) {
+        if (data.status === 200) {
           setUsername(data.username);
+        } else {
+          console.error(data.message); // Log error message from the server
         }
       } catch (error) {
-        console.error('Error fetching movie data:', error);
+        console.error('Error fetching username:', error);
       }
     };
-    fetchUsername();
-  }, [username]);
+
+    if (!username) {
+      fetchUsername(); // Fetch only if username isn't already set
+    }
+  }, [username]); // Remove username from dependency array if you don't want continuous polling
 
   return (
-    <div className="sidebar">
-      <h3>Navigation</h3>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/register">Register</Link></li>
-      </ul>
+    <div className="user-greeting">
+      {username ? <h1>Welcome, {username}</h1> : <h1>Sign in</h1>}
     </div>
-    
   );
 }
 

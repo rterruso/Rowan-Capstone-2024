@@ -4,6 +4,7 @@ import DisplayMovieData from './DisplayMovieData.jsx';
 import Login from '../pages/Login.jsx';
 import WelcomeUser from './WelcomeUser.jsx';
 import Register from '../pages/Register.jsx';
+import QueueList from '../components/FetchAndDisplayFromQueue.jsx';
 
 const SortFilterMenu = () => {
     const [sortValue, setSortValue] = useState('date-asc');
@@ -92,8 +93,13 @@ const SortFilterMenu = () => {
                         <option value="Western">Western</option>
                     </select>
                 </div>
+                <div className='queue'>
+                <QueueList/>
+                <h2>Movies</h2>
+            </div>
             </div>
             <DisplayMovieData movieResults={movieResults} sortValue={sortValue} filterValue={filterValue} />
+
         </div>
     );
 }

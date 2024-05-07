@@ -59,6 +59,7 @@ body {
   box-shadow: none;
   background-color: #635985;
   width: 1300px;
+  margin-left: -300px;
 }
 
 
@@ -199,39 +200,3 @@ body {
   right: 150px;
 }
 
-.app-container {
-  display: flex;
-  height: 100vh; /* Full viewport height */
-}
-
-.sidebar {
-  width: 320px; 
-  background-color: #333; 
-  color: white; /* Light text color */
-  padding: 20px; /* Padding inside the sidebar */
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  height: 153%; /* Full height */
-}
-
-.content {
-  flex-grow: 1; 
-  background-color: #f4f4f4; 
-  padding: 20px; 
-  overflow-y: auto; /* Add scroll to content if needed */
-}
-
-.sidebar ul {
-  list-style: none; /* Remove default list styling */
-  padding: 0; /* Remove default padding */
-}
-
-.sidebar ul li a {
-  color: white; /* White color for links */
-  text-decoration: none; /* No underline */
-}
-
-.sidebar ul li a:hover {
-  text-decoration: underline; 
-}
