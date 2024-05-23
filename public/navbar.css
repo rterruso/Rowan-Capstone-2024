@@ -1,12 +1,11 @@
 .navbar {
-    background-color: #060b26;
+    background-color: #393e46;
     height: 80px;
     display: flex;
     justify-content: start;
     align-items: center;
     margin-top: -80px;
-    width: 190%;
-    margin-left: -453px;
+    width: 100%;
     margin-bottom: 20px;
   }
   
@@ -17,8 +16,8 @@
   }
   
   .nav-menu {
-    background-color: #060b26;
-    width: 250px;
+    background-color:#393e46;
+    width: 15%;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -63,7 +62,7 @@
   }
   
   .navbar-toggle {
-    background-color: #060b26;
+    background-color: #393e46;
     width: 100%;
     height: 80px;
     display: flex;
@@ -76,3 +75,9 @@
   }
 
 
+  @media (min-width: 1920px) {
+    .navbar {
+      width: 190.2%;
+      margin-left: -452px;
+    }
+}

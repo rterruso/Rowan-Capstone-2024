@@ -1,6 +1,6 @@
 function WelcomeMessage(){
     return(
-        <h2 style={{ color: 'white' }}>Welcome to CinemaWorld</h2>
+        <h2 style={{ color: 'black' }}>Welcome to CinemaWorld</h2>
     )
 }
 

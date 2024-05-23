@@ -29,7 +29,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   padding-top: 80px;
-  background-color: #635985;
+  background-color: #ffffff;
 }
 
 .login {
@@ -57,14 +57,15 @@ body {
   padding: 10px;
   border-radius: 5px;
   box-shadow: none;
-  background-color: #635985;
+  background-color: white;
   width: 1300px;
   margin-left: -300px;
 }
 
 
 .movie-grid {
-  background-color: #635985;
+  border-radius: 15px;
+  background-color: #393e46;
   display:grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 15px;
@@ -80,6 +81,7 @@ body {
   flex-direction: column; 
   align-items: center; 
   margin: 5px;
+  margin-top: 10px;
   filter: drop-shadow(5px 5px black);
   border-radius: 8px;
 }
