@@ -1,0 +1,1276 @@
+<!-- DO NOT EDIT -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaWorld - Home</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <!-- font-awesome -->
+    <script
+      src="https://kit.fontawesome.com/48277c1705.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body class="container bg-dark text-white">
+    <script>
+      function getAuthorization() {
+        return (options = {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkN2RkNzc4ZDJmMzQxYzA5NjY2MmY5ZjQ0MjYzYjY0ZSIsInN1YiI6IjY1YzUwNjU0MTk0MTg2MDE2Mjc1ZTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3pn0_lr-lCIVOigU8uHz6BcWtEGSXbSsQlbASJgoL84',
+          },
+        });
+      }
+
+      async function fetchMovieJSONData() {
+        await fetch(url, getAuthorization())
+          .then((response) => {
+            return response.text();
+          })
+          .then((data) => {
+            const JSONdata = JSON.parse(data);
+
+            return JSONdata;
+          })
+          .catch((error) => console.error('Error fetching the data:', error));
+      }
+
+      function getGenresData() {
+        return {
+          genres: [
+            {
+              id: 28,
+              name: 'Action',
+            },
+            {
+              id: 12,
+              name: 'Adventure',
+            },
+            {
+              id: 16,
+              name: 'Animation',
+            },
+            {
+              id: 35,
+              name: 'Comedy',
+            },
+            {
+              id: 80,
+              name: 'Crime',
+            },
+            {
+              id: 99,
+              name: 'Documentary',
+            },
+            {
+              id: 18,
+              name: 'Drama',
+            },
+            {
+              id: 10751,
+              name: 'Family',
+            },
+            {
+              id: 14,
+              name: 'Fantasy',
+            },
+            {
+              id: 36,
+              name: 'History',
+            },
+            {
+              id: 27,
+              name: 'Horror',
+            },
+            {
+              id: 10402,
+              name: 'Music',
+            },
+            {
+              id: 9648,
+              name: 'Mystery',
+            },
+            {
+              id: 10749,
+              name: 'Romance',
+            },
+            {
+              id: 878,
+              name: 'Science Fiction',
+            },
+            {
+              id: 10770,
+              name: 'TV Movie',
+            },
+            {
+              id: 53,
+              name: 'Thriller',
+            },
+            {
+              id: 10752,
+              name: 'War',
+            },
+            {
+              id: 37,
+              name: 'Western',
+            },
+          ],
+        };
+      }
+
+      function mapGenres(currentMovie) {
+        const genresJSONData = getGenresData();
+
+        const genresData = genresJSONData.genres; // Accesses the "genres" array
+
+        let genreNames = [];
+
+        for (let i = 0; i < currentMovie.genre_ids.length; i++) {
+          for (let j = 0; j < genresData.length; j++) {
+            if (genresData[j].id === currentMovie.genre_ids[i]) {
+              genreNames += genresData[j].name + ', ';
+            }
+          }
+        }
+
+        return genreNames.slice(0, -2);
+      }
+      /*IMPLEMENT TRY CATCH TO PRINT MOVIE DATA AND SEPARATE DISPLAY AND FETCH DATA SEPARATELY*/
+      async function displayMovies() {
+        const url =
+          'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+        fetch(url, getAuthorization())
+          .then((response) => {
+            return response.text();
+          })
+          .then((data) => {
+            const JSONdata = JSON.parse(data);
+
+            const trendingOverviewContainer =
+              document.getElementById('trending-overview');
+            const modalContainer = document.getElementById(
+              'trending-modal-container'
+            );
+            const modalPoster = document.querySelector('.modal-poster');
+            const modalTitle = document.getElementById('modal-title');
+            const modalOverview = document.getElementById('modal-overview');
+            const modalReleaseDate =
+              document.getElementById('modal-release-date');
+            const modalRating = document.getElementById('modal-rating');
+            const modalGenres = document.getElementById('modal-genres');
+            const closeButton = document.querySelector('.close-button');
+
+            trendingOverviewContainer.innerHTML = '';
+
+            for (let i = 0; i < JSONdata.results.length; i++) {
+              const currentMovie = JSONdata.results[i];
+
+              const movieElement = document.createElement('div');
+              movieElement.classList.add(
+                'movie-item',
+                'col-6',
+                'col-sm-6',
+                'col-md-4',
+                'col-lg-3'
+              );
+
+              const moviePoster = document.createElement('img');
+              moviePoster.src =
+                'https://image.tmdb.org/t/p/w185' + currentMovie.poster_path;
+
+              moviePoster.style.width = '100%';
+              moviePoster.style.height = 'auto'; // Maintain aspect ratio
+              moviePoster.style.padding = '1rem';
+              moviePoster.style.borderRadius = '1rem';
+
+              moviePoster.addEventListener('click', async () => {
+                modalPoster.src = moviePoster.src;
+                modalTitle.textContent = currentMovie.title;
+                modalOverview.textContent = currentMovie.overview;
+                modalReleaseDate.textContent = currentMovie.release_date;
+                modalRating.textContent =
+                  Math.round(currentMovie.vote_average * 10) / 10;
+                modalGenres.textContent = mapGenres(currentMovie);
+
+                modalContainer.style.display = 'flex';
+                (modalContainer.style.justifyContent = 'center'),
+                  (modalContainer.style.alignItems = 'center');
+              });
+
+              movieElement.appendChild(moviePoster);
+
+              const movieTitle = document.createElement('h5');
+              movieTitle.classList.add('pt-2', 'text-center');
+              movieTitle.textContent = currentMovie.title;
+              movieElement.appendChild(movieTitle);
+
+              trendingOverviewContainer.appendChild(movieElement);
+            }
+
+            closeButton.addEventListener('click', () => {
+              modalContainer.style.display = 'none';
+            });
+
+            document.addEventListener('click', (event) => {
+              if (event.target === modalContainer) {
+                modalContainer.style.display = 'none';
+              }
+            });
+          })
+          .catch((error) => console.error('Error fetching the data:', error));
+      }
+    </script>
+
+    <div>
+      <div class="primary-header">
+        <h5>CinemaWorld</h5>
+        <div class="search-container d-none d-sm-block">
+          <input
+            type="text"
+            id="search-box"
+            placeholder="Search for a movie..."
+            autocomplete="on"
+          />
+          <button id="search-button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        <div class="text-center">
+          <a href="/src/components/Login.js" class="btn btn-primary rounded-0"
+            >Login</a
+          >
+          <a href="/register.html" class="btn btn-secondary rounded-0"
+            >Register</a
+          >
+        </div>
+      </div>
+      <div class="search-container-mobile d-block d-sm-none mb-3">
+        <input
+          type="text"
+          id="search-box-mobile"
+          placeholder="Search for a movie..."
+          autocomplete="on"
+          style="width: 100%"
+        />
+        <button id="search-button-mobile">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
+      <div class="header">
+        <h3>Welcome to CinemaWorld</h3>
+        <p>Your one-stop destination for all things cinema.</p>
+      </div>
+
+      <div class="container bg-dark text-white">
+        <div class="sort-filter-menu">
+          <!-- <h6 class="mx-2">Sort By:</h6> -->
+          <select id="sort-select" class="sort-menu">
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="title-desc">Title (Z-A)</option>
+            <option value="date-asc">Release Date (Newest)</option>
+            <option value="date-desc">Release Date (Oldest)</option>
+            <option value="rating-asc">Rating (Lowest)</option>
+            <option value="rating-desc">Rating (Highest)</option>
+          </select>
+          <!-- <h6 class="mx-2">Filter By:</h6> -->
+          <select id="filter-select" class="filter-menu">
+            <option value="all">All</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Family">Family</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="History">History</option>
+            <option value="Horror">Horror</option>
+            <option value="Music">Music</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="TV Movie">TV Movie</option>
+            <option value="Thriller">Thriller</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+          </select>
+        </div>
+
+        <script>
+          async function dispMovieTitleAsc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].title.toLowerCase() <
+                      movies[minIndex].title.toLowerCase()
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+                  moviePoster.style.borderRadius = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          async function dispMovieTitleDesc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].title.toLowerCase() >
+                      movies[minIndex].title.toLowerCase()
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+                  moviePoster.style.borderRadius = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          function dispMovieDateAsc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].release_date.toLowerCase() >
+                      movies[minIndex].release_date.toLowerCase()
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          function dispMovieDateDesc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].release_date.toLowerCase() <
+                      movies[minIndex].release_date.toLowerCase()
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          function dispMovieRatingAsc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].vote_average < movies[minIndex].vote_average
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          function dispMovieRatingDesc() {
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const movies = JSONdata.results;
+
+                for (let i = 0; i < movies.length - 1; i++) {
+                  let minIndex = i;
+                  for (let j = i + 1; j < movies.length; j++) {
+                    if (
+                      movies[j].vote_average > movies[minIndex].vote_average
+                    ) {
+                      minIndex = j;
+                    }
+                  }
+                  if (i !== minIndex) {
+                    const temp = movies[i];
+                    movies[i] = movies[minIndex];
+                    movies[minIndex] = temp;
+                  }
+                }
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = movies[i];
+
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' +
+                    currentMovie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = currentMovie.title;
+                    modalOverview.textContent = currentMovie.overview;
+                    modalReleaseDate.textContent = currentMovie.release_date;
+                    modalRating.textContent =
+                      Math.round(currentMovie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(currentMovie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = currentMovie.title;
+                  movieElement.appendChild(movieTitle);
+
+                  trendingOverviewContainer.appendChild(movieElement);
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          }
+
+          const sortSelect = document.getElementById('sort-select');
+          const filterSelect = document.getElementById('filter-select');
+
+          sortSelect.addEventListener('change', async (event) => {
+            const selectedSort = event.target.value;
+
+            if (selectedSort === 'title-asc') {
+              dispMovieTitleAsc();
+            } else if (selectedSort === 'title-desc') {
+              dispMovieTitleDesc();
+            } else if (selectedSort === 'date-asc') {
+              dispMovieDateAsc();
+            } else if (selectedSort === 'date-desc') {
+              dispMovieDateDesc();
+            } else if (selectedSort === 'rating-asc') {
+              dispMovieRatingAsc();
+            } else if (selectedSort === 'rating-desc') {
+              dispMovieRatingDesc();
+            } else {
+              displayMovies();
+            }
+          });
+
+          filterSelect.addEventListener('change', async (event) => {
+            const selectedFilter = event.target.value;
+
+            const url =
+              'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+
+            fetch(url, getAuthorization())
+              .then((response) => {
+                return response.text();
+              })
+              .then((data) => {
+                const JSONdata = JSON.parse(data);
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                trendingOverviewContainer.innerHTML = '';
+
+                for (let i = 0; i < JSONdata.results.length; i++) {
+                  const currentMovie = JSONdata.results[i];
+
+                  if (mapGenres(currentMovie).includes(selectedFilter)) {
+                    const movieElement = document.createElement('div');
+                    movieElement.classList.add(
+                      'movie-item',
+                      'col-6',
+                      'col-sm-6',
+                      'col-md-4',
+                      'col-lg-3'
+                    );
+
+                    const moviePoster = document.createElement('img');
+                    moviePoster.src =
+                      'https://image.tmdb.org/t/p/w185' +
+                      currentMovie.poster_path;
+
+                    moviePoster.style.width = '100%';
+                    moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                    moviePoster.style.padding = '1rem';
+
+                    moviePoster.addEventListener('click', async () => {
+                      modalPoster.src = moviePoster.src;
+                      modalTitle.textContent = currentMovie.title;
+                      modalOverview.textContent = currentMovie.overview;
+                      modalReleaseDate.textContent = currentMovie.release_date;
+                      modalRating.textContent =
+                        Math.round(currentMovie.vote_average * 10) / 10;
+                      modalGenres.textContent = mapGenres(currentMovie);
+
+                      modalContainer.style.display = 'flex';
+                      (modalContainer.style.justifyContent = 'center'),
+                        (modalContainer.style.alignItems = 'center');
+                    });
+
+                    movieElement.appendChild(moviePoster);
+
+                    const movieTitle = document.createElement('h5');
+                    movieTitle.classList.add('pt-2', 'text-center');
+
+                    movieTitle.textContent = currentMovie.title;
+                    movieElement.appendChild(movieTitle);
+
+                    trendingOverviewContainer.appendChild(movieElement);
+                  } else if (selectedFilter === 'all') {
+                    displayMovies();
+                  } else {
+                    continue;
+                  }
+                }
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              })
+              .catch((error) =>
+                console.error('Error fetching the data:', error)
+              );
+          });
+        </script>
+
+        <div class="row">
+          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+          <script>
+            const searchButton = document.getElementById('search-button');
+            const searchBox = document.getElementById('search-box');
+
+            const searchButtonMobile = document.getElementById(
+              'search-button-mobile'
+            );
+            const searchBoxMobile =
+              document.getElementById('search-box-mobile');
+
+            const searchContainer =
+              document.getElementById('.search-container');
+
+            const searchContainerMobile = document.getElementById(
+              '.search-container-mobile'
+            );
+
+            //ADD EL FOR WHEN SEARCH BOX IS EMPTY TO CALL DISPLAY MOVIES AGAIN
+            searchButton.addEventListener('click', () => {
+              const movieTitle = searchBox.value;
+              console.log(movieTitle);
+              if (movieTitle === '') {
+                displayMovies();
+              } else {
+                searchAndDisplayMovie(movieTitle);
+              }
+            });
+
+            searchButtonMobile.addEventListener('click', () => {
+              const movieTitle = searchBoxMobile.value;
+              if (movieTitle === '') {
+                displayMovies();
+              } else {
+                searchAndDisplayMovie(movieTitle);
+              }
+            });
+
+            async function searchAndDisplayMovie(movieTitle) {
+              try {
+                const API_KEY = 'd7dd778d2f341c096662f9f44263b64e'; // Replace with your TMDB API key
+                const url =
+                  'https://api.themoviedb.org/3/search/movie?api_key=' +
+                  API_KEY +
+                  '&query=' +
+                  movieTitle;
+                const response = await fetch(url, getAuthorization());
+                const searchResults = JSON.parse(await response.text());
+
+                const trendingOverviewContainer =
+                  document.getElementById('trending-overview');
+                const modalContainer = document.getElementById(
+                  'trending-modal-container'
+                );
+                const modalPoster = document.querySelector('.modal-poster');
+                const modalTitle = document.getElementById('modal-title');
+                const modalOverview = document.getElementById('modal-overview');
+                const modalReleaseDate =
+                  document.getElementById('modal-release-date');
+                const modalRating = document.getElementById('modal-rating');
+                const modalGenres = document.getElementById('modal-genres');
+                const closeButton = document.querySelector('.close-button');
+
+                // Clear existing results
+                trendingOverviewContainer.innerHTML = '';
+
+                // Display the Results
+                searchResults.results.forEach((movie) => {
+                  const movieElement = document.createElement('div');
+                  movieElement.classList.add(
+                    'movie-item',
+                    'col-6',
+                    'col-sm-6',
+                    'col-md-4',
+                    'col-lg-3'
+                  );
+
+                  const moviePoster = document.createElement('img');
+                  moviePoster.src =
+                    'https://image.tmdb.org/t/p/w185' + movie.poster_path;
+
+                  moviePoster.style.width = '100%';
+                  moviePoster.style.height = 'auto'; // Maintain aspect ratio
+                  moviePoster.style.padding = '1rem';
+
+                  moviePoster.addEventListener('click', async () => {
+                    modalPoster.src = moviePoster.src;
+                    modalTitle.textContent = movie.title;
+                    modalOverview.textContent = movie.overview;
+                    modalReleaseDate.textContent = movie.release_date;
+                    modalRating.textContent =
+                      Math.round(movie.vote_average * 10) / 10;
+                    modalGenres.textContent = mapGenres(movie);
+
+                    modalContainer.style.display = 'flex';
+                    (modalContainer.style.justifyContent = 'center'),
+                      (modalContainer.style.alignItems = 'center');
+                  });
+
+                  movieElement.appendChild(moviePoster);
+
+                  const movieTitle = document.createElement('h5');
+                  movieTitle.classList.add('pt-2', 'text-center');
+
+                  movieTitle.textContent = movie.title;
+                  movieElement.appendChild(movieTitle);
+                  trendingOverviewContainer.appendChild(movieElement);
+                });
+
+                closeButton.addEventListener('click', () => {
+                  modalContainer.style.display = 'none';
+                });
+
+                document.addEventListener('click', (event) => {
+                  if (event.target === modalContainer) {
+                    modalContainer.style.display = 'none';
+                  }
+                });
+              } catch (error) {
+                console.log('ERROR searching for movie', movie);
+              }
+            }
+          </script>
+        </div>
+
+        <!--script src="/public/js/script.js"></script-->
+
+        <div class="row">
+          <!-- <div class="col">
+                        <h2>About Us</h2>
+                        <p>
+                            CinemaWorld is a platform dedicated to movie enthusiasts around the
+                            globe. Discover movies, explore actor filmographies, and connect
+                            with other fans.
+                        </p>
+                    </div>
+                    <div class="col">
+                        <h2>Explore</h2>
+                        <p>
+                            Browse our extensive database of movies and actors. Dive deep into
+                            the world of cinema with us.
+                        </p>
+                    </div> -->
+
+          <h4 class="trending-title">Trending</h4>
+          <div id="trlending-overview" class="row"></div>
+
+          <div id="trending-modal-container">
+            <div class="modal-content-class">
+              <div class="modal-details">
+                <div class="row">
+                  <h2 class="close-button">&times;</h2>
+                  <div class="col-12 col-sm-8 order-2 order-sm-1">
+                    <h3 id="modal-title"></h3>
+                    <p id="modal-overview"></p>
+
+                    <div class="model-content-item">
+                      <p><b>Release Data:</b></p>
+                      <p id="modal-release-date" class="mx-2"></p>
+                    </div>
+                    <div class="model-content-item">
+                      <p><b>Rating:</b></p>
+                      <p id="modal-rating" class="mx-2"></p>
+                    </div>
+                    <p id="modal-genres"></p>
+                    <button
+                      class="save-to-queue-button rounded-0"
+                      onclick="queue.js"
+                    >
+                      Save to Queue
+                    </button>
+                  </div>
+                  <div class="col-12 col-sm-4 order-1 order-sm-2">
+                    <img src="" alt="Movie Poster" class="modal-poster" />
+                  </div>
+                </div>
+                <!--LINK TO PROPER JS SCRIPT-->
+              </div>
+            </div>
+            <script>
+              displayMovies();
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous">
+    </script>
+  </body>
+</html>
+
+<!-- DO NOT EDIT -->
